@@ -1,7 +1,7 @@
 # WebSecurityCheatSheet
 
 ## 📖 Table of contents
-- [HTTPs (i.e. Apache2)](#https-i-e-apache2)
+- [HTTPs (i.e. Apache2)](#https-ie-apache2)
   - [Redirect all HTTP traffic to HTTPs](#redirect-all-http-traffic-to-https)
   - [Transport Layer Security (TLS)](#transport-layer-security-tls)
   - [HTTP Strict Transport Security (HSTS)](#http-strict-transport-security-hsts)
@@ -25,7 +25,7 @@
 - [HTML DOM sanitization](#html-dom-sanitization)
   - [Links](#links)
   - [POST vs GET](#post-vs-get)
-  - [e.innerHTML()](#einnerhtml)
+  - [e.innerHTML](#einnerhtml)
   - [eval() and new Function()](#eval-and-new-function)
   - [DOMPurify](#dompurify)
 - [Analysis tools](#analysis-tools)
@@ -36,13 +36,13 @@
 
 **_This guide is intended for full-stack developers working with JavaScript technologies (React, Vue, etc.) and a Node.js/PHP backend._**
 
-**_.NET, JAVA, Django, or Ruby are therefore not included in this guide._**
+**_.NET, JAVA, Django or Ruby are therefore not included in this guide._**
 
 ## **HTTPs (i.e. Apache2)**
 
 ### **Redirect all HTTP traffic to HTTPs**
 
-Write in __/etc/apache2/apache2.conf_:
+Write in _/etc/apache2/apache2.conf_:
 
 ``` apache
 Redirect permanent / <https://domain.com/>
@@ -68,7 +68,7 @@ Reload Apache and submit your website to <https://hstspreload.org/>
 
 ### **SSL**
 
-Disable all non-secure encryption algorithms. Go to /etc/apache2/conf-available/\*ssl.conf and write:
+Disable all non-secure encryption algorithms. Go to _/etc/apache2/conf-available/ssl.conf_ and write:
 
 ``` apache
 SSLCipherSuite ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384
@@ -158,18 +158,18 @@ $row = $query->fetch();
 
 ``Domain=domain.com; Path=/; Secure; HttpOnly; SameSite=Lax or Strict``
 
-**Secure:** All cookies must be set with the Secure directive, indicating that they should only be sent over HTTPs
+**Secure:** All cookies must be set with the _Secure_ directive, indicating that they should only be sent over HTTPs
 
-**HttpOnly:** Cookies that don't require access from JavaScript should have the HttpOnly directive set to block access
+**HttpOnly:** Cookies that don't require access from JavaScript should have the _HttpOnly_ directive set to block access
 
-**Domain:** Cookies should only have a Domain set if they need to be accessible on other domains; this should be set to the most restrictive domain possible
+**Domain:** Cookies should only have a _Domain_ set if they need to be accessible on other domains; this should be set to the most restrictive domain possible
 
-**Path:** Cookies should be set to the most restrictive Path possible
+**Path:** Cookies should be set to the most restrictive _Path_ possible
 
 **SameSite:**
 
 - **Strict:** Only send the cookie in same-site contexts. Cookies are omitted in cross-site requests and cross-site navigation
-- **Lax:** Send the cookie in same-site requests and when navigating to your website. Use this value if Strict is too restrictive
+- **Lax:** Send the cookie in same-site requests and when navigating to your website. Use this value if _Strict_ is too restrictive
 
 ## **PHP**
 
@@ -228,7 +228,7 @@ session.sid_length       = > 128
 
 - Always keep all npm dependencies up to date
 - Limit the use of dependencies
-- Use npm doctor to ensure that your npm installation has what it needs to manage your JavaScript packages
+- Use _npm doctor_ to ensure that your npm installation has what it needs to manage your JavaScript packages
 - Use eslint to write quality code
 - To manage user cookies, use express.js and passport.js with JWT tokens
 
@@ -300,7 +300,7 @@ Always use _rel="noreferrer noopener"_ to prevent the referrer header from being
 
 ### **POST vs GET**
 
-Never trust user inputs, validate and sanitize all data. Prefer POST requests instead of GET requests and sanitize/encode user form data with a strong regex and _URLSearchParams_ or _encodeURIComponent_.
+Never trust user inputs, validate and sanitize all data. Prefer POST requests instead of GET requests and sanitize/encode user form data with a strong regex and _URLSearchParams()_ or _encodeURIComponent()_.
 
 ``` javascript
 try {
@@ -323,7 +323,7 @@ try {
 }
 ```
 
-### **e.innerHTML()**
+### **e.innerHTML**
 
 Never use _innerHTML_, use _innerText_ or _textContent_ instead. You can also create your element with _document.createElement()_.
 
