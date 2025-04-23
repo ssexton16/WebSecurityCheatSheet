@@ -132,6 +132,13 @@ Write in _/etc/apache2/apache2.conf_:
 - Use a strong database password and restrict user permissions
 - Hash all user login passwords before storing them in the database
 - For MySQL/MariaDB databases, use prepared queries to prevent injections
+
+``` php
+$query = $PDO->prepare("SELECT name FROM users WHERE name=:NameConnect LIMIT 1");
+$query->execute([':NameConnect' => $name]);
+$row = $query->fetch();
+```
+
 - For MySQL/MariaDB databases, use _mysql_secure_installation_
 - For NoSQL databases, like MongoDB, use a typed model to prevent injections
 - Avoid _$accumulator_, _$function_, _$where_ in MongoDB
@@ -280,7 +287,7 @@ cross-origin-opener-policy "same-origin"
 cross-origin-resource-policy "cross-origin"
 ```
 
-In addition be sure to remove Server and X-Powered-By headers.
+In addition be sure to remove _Server_ and _X-Powered-By_ headers.
 
 > [!NOTE]
 > Never use _X-XSS-Protection_, it is depracated and can create XSS vulnerabilities in otherwise safe websites. _X-Frame-Options_ is depracated and replaced by _frame-ancestors 'none'_. Always start with _default-src 'none'_, avoid _unsafe-inline_ and _unsafe-eval_. Use hashes or nonces for inline scripts/styles.
