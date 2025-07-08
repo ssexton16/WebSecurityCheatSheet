@@ -2,6 +2,7 @@
 
 ## 📖 Table of contents
 - [HTTPs (i.e. Apache2)](#https-ie-apache2)
+  - [Let's Encrypt](#lets-encrypt)
   - [Redirect all HTTP traffic to HTTPs](#redirect-all-http-traffic-to-https)
   - [Transport Layer Security (TLS)](#transport-layer-security-tls)
   - [HTTP Strict Transport Security (HSTS)](#http-strict-transport-security-hsts)
@@ -11,6 +12,7 @@
   - [Enable mod_security](#enable-mod_security)
   - [Hide server signature](#hide-server-signature)
   - [Restrict access to files](#restrict-access-to-files)
+- [Nginx](#nginx)
 - [Database](#database)
 - [Authorization](#authorization)
 - [Cookies](#cookies)
@@ -18,6 +20,7 @@
   - [PHP-FPM](#php-fpm)
   - [PHP PDO](#php-pdo)
   - [php.ini](#phpini)
+- [Express.js](#expressjs)
 - [Node.js/npm](#nodejsnpm)
 - [Docker](#docker)
 - [Ubuntu VPS](#ubuntu-vps)
@@ -39,6 +42,22 @@
 **_.NET, JAVA, Django or Ruby are therefore not included in this guide._**
 
 ## **HTTPs (i.e. Apache2)**
+
+### **Let's Encrypt**
+Install certificates with Let's Encrypt
+```
+sudo apt install certbot python3-certbot-apache
+```
+
+```
+sudo certbot certonly --standalone -d example.com -d www.example.com
+```
+
+Add a CAA record to your DNS zone
+
+```
+CAA 0 issue "letsencrypt.org"
+```
 
 ### **Redirect all HTTP traffic to HTTPs**
 
@@ -127,6 +146,34 @@ Write in _/etc/apache2/apache2.conf_:
 </Directory>
 ```
 
+## **Nginx**
+``` nginx
+server {
+  listen 80;
+  server_name localhost;
+  server_tokens off;
+  proxy_hide_header X-Powered-By;
+
+  location / {
+    root /usr/share/nginx/html;
+    index index.html;
+    try_files $uri $uri/ /index.html;
+
+    limit_except GET POST {
+      deny all;
+    }
+  }
+}
+server {
+  listen 443 ssl http2;
+
+  ssl_stapling on;
+  ssl_protocols TLSv1.2 TLSv1.3;
+  ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384';
+  ssl_prefer_server_ciphers on;
+}
+```
+
 ## **Database**
 
 - Use a strong database password and restrict user permissions
@@ -142,7 +189,7 @@ $row = $query->fetch();
 - For MySQL/MariaDB databases, use _mysql_secure_installation_
 - For NoSQL databases, like MongoDB, use a typed model to prevent injections
 - Avoid _$accumulator_, _$function_, _$where_ in MongoDB
-- Use .env for database and server secrets
+- Use .env for database and server secrets, encrypt it with _dotenvx_
 - Encrypt all user data (e.g. AES-256-GCM), store encryption keys in a secure vault like AWS Secrets Manager, Google Secrets Manager or Azure KeyVault
 
 ## **Authorization**
@@ -222,6 +269,72 @@ session.cookie_secure    = 1
 session.cookie_httponly  = 1
 session.cookie_samesite  = strict
 session.sid_length       = > 128
+```
+
+## **Express.js**
+
+Secure Express.js with HTTPS
+``` js
+https
+  .createServer({
+    key: fs.readFileSync(process.env.SSL_KEY),
+    cert: fs.readFileSync(process.env.SSL_CERT),
+  }, app)
+  .listen(PORT, () => {
+    console.log('Server listening on: https://localhost:%s', PORT)
+  })
+```
+
+Secure Express.js with Helmet
+``` js
+app.use(helmet())
+```
+
+Secure all routes with express-rate-limit
+``` js
+const limiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: 100,
+  message: 'Too many requests, please try again later.',
+})
+
+app.use(limiter)
+```
+
+Secure sessions with express-session
+``` js
+app.use(session({
+  store: redisStore,
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 604800000,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Strict'
+  }
+}))
+```
+
+Verify authentication with JWT tokens
+``` js
+const checkToken = (req, res, next) => {
+  const token = req.cookies.token
+  if (!token) {
+    return res.status(401).json({ response: 0 })
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ response: 0 })
+    }
+    if (req.session.name !== decoded.id) {
+      return res.status(401).json({ response: 0 })
+    }
+    next()
+  })
+}
 ```
 
 ## **Node.js/npm**
@@ -353,36 +466,32 @@ const clean = DOMPurify.sanitize(dirty, purifyconfig)
 
 [**Mozilla Observatory**](https://developer.mozilla.org/en-US/observatory)
 
-[**SSLLabs**](https://www.ssllabs.com/)
+[**SSLLabs**](https://www.ssllabs.com/ssltest/)
 
 [**Cryptcheck**](https://cryptcheck.fr/)
-
-[**Security Headers**](https://securityheaders.com/)
-
-[**Hardenize**](https://www.hardenize.com/)
-
-[**Immuniweb**](https://www.immuniweb.com/)
 
 [**W3C Validator**](https://validator.w3.org/)
 
 ## **Sources and resources**
 
-[**https://developer.mozilla.org/en-US/**](https://developer.mozilla.org/en-US/)
+https://developer.mozilla.org/en-US/
 
-[**https://www.cnil.fr/fr/securiser-vos-sites-web-vos-applications-et-vos-serveurs**](https://www.cnil.fr/fr/securiser-vos-sites-web-vos-applications-et-vos-serveurs)
+https://www.cnil.fr/fr/securiser-vos-sites-web-vos-applications-et-vos-serveurs
 
-[**https://cyber.gouv.fr/publications/recommandations-de-securite-relatives-tls**](https://cyber.gouv.fr/publications/recommandations-de-securite-relatives-tls)
+https://cyber.gouv.fr/publications/recommandations-de-securite-relatives-tls
 
-[**https://owasp.org/www-project-top-ten/**](https://owasp.org/www-project-top-ten/)
+https://owasp.org/www-project-top-ten/
 
-[**https://cheatsheetseries.owasp.org/**](https://cheatsheetseries.owasp.org/)
+https://cheatsheetseries.owasp.org/
 
-[**https://www.cert.ssi.gouv.fr/**](https://www.cert.ssi.gouv.fr/)
+https://www.cert.ssi.gouv.fr/
 
-[**https://phpdelusions.net/**](https://phpdelusions.net/)
+https://phpdelusions.net/
 
-[**https://www.digitalocean.com/community/tutorials**](https://www.digitalocean.com/community/tutorials)
+https://expressjs.com/en/advanced/best-practice-security.html
 
-[**https://thehackernews.com/**](https://thehackernews.com/)
+https://www.digitalocean.com/community/tutorials
 
-[**https://portswigger.net/daily-swig/zero-day**](https://portswigger.net/daily-swig/zero-day)
+https://thehackernews.com/
+
+https://portswigger.net/daily-swig/zero-day
