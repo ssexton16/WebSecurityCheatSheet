@@ -21,6 +21,7 @@
   - [PHP PDO](#php-pdo)
   - [php.ini](#phpini)
 - [Express.js](#expressjs)
+- [User login](#user-login)
 - [Node.js/npm](#nodejsnpm)
 - [Docker](#docker)
 - [Ubuntu VPS](#ubuntu-vps)
@@ -335,6 +336,56 @@ const checkToken = (req, res, next) => {
     next()
   })
 }
+```
+
+## **User login**
+## **Login**
+
+A secure express.js login system using JWT tokens, rate limiting and passport.js
+
+``` js
+const loginLimiter = rateLimit({
+  windowMs: 3 * 60 * 1000,
+  max: 5,
+  message: 'Too many login attempts from this IP, please try again later'
+})
+router.post('/login-user', loginLimiter, [
+  body('username').isLength({ min: 3 }).trim().escape(),
+  body('password').isLength({ min: 6 })
+], (req, res, next) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  }
+
+  if (!req.body.username || !req.body.password) {
+    return res.status(403).json({ response: 0, message: 'Username and password are required' })
+  }
+
+  passport.authenticate('local', (err, user) => {
+    if (err) return next(err)
+    if (!user) return res.status(403).json({ response: 0, message: 'Invalid credentials' })
+
+    req.logIn(user, async (err) => {
+      if (err) return next(err)
+
+      try {
+        const userNameToken = jwtToken.createToken(user.username)
+
+        res.cookie('userName', userNameToken, {
+          maxAge: 604800000,
+          httpOnly: true,
+          secure: true,
+          sameSite: 'Strict'
+        })
+
+        return res.status(200)
+      } catch (err) {
+        return next(err)
+      }
+    })
+  })(req, res, next)
+})
 ```
 
 ## **Node.js/npm**
